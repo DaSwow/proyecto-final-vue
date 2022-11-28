@@ -52,16 +52,17 @@ export default {
 
     async agregarPelicula() {
       try {
-        if(this.disponible  != ""){
-          this.disponible=true
-        } else {
-          this.disponible=false
-        }
+        if(this.disponible  != ""){this.disponible=true} 
+        else {this.disponible=false}
+
         alert(this.atributos)
         this.axios.post("/peliculas",this.atributos)
         .then((res)=>{
           this.Atributos.push(res.data);
-        
+          this.atributos.id=""
+          this.atributos.nombre=""
+          this.atributos.genero=""
+          this.atributos.disponible=false
         })
       } catch (error) {
         console.error(error)
