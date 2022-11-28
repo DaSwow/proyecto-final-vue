@@ -6,8 +6,7 @@ const peliculas = require("../modelos/peliculas");
 
 rutas.get("/", async (req, res) => {
   const listapeliculas = await peliculas.find();
-
-  res.render("hola", { listapeliculas });
+  res.json(listapeliculas);
 });
 
 rutas.get("/peliculas:id?", async (req, res) => {
