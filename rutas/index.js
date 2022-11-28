@@ -1,4 +1,8 @@
+const express = require('express');
+const rutas = express.Router();
+
 const peliculas = require("../modelos/peliculas");
+
 
 rutas.get("/", async (req, res) => {
   const listapeliculas = await peliculas.find();
@@ -8,8 +12,8 @@ rutas.get("/", async (req, res) => {
 
 rutas.get("/peliculas:id?", async (req, res) => {
   const { id } = req.query;
-  const listapeliculas = await peliculas.find({ id: id });
-  res.render("hola", { listapeliculas });
+  const listaPeliculas = await peliculas.find({ id: id });
+  res.render("hola", { listaPeliculas });
 });
 
 //middleware
@@ -34,19 +38,21 @@ rutas.put("/peliculas/:id", async (req, res) => {
     await peliculas.updateOne({ id: id }, { $set: { disponible: false } });
   }
 
-  res.redirect("/");
+
 });
 
 rutas.delete("/peliculas/:id", async (req, res) => {
   const id = req.params.id;
   await peliculas.deleteOne({ id: id });
-  res.redirect("/");
+
 });
 
 rutas.post("/peliculas", async (req, res) => {
+  //console.log(req.body)
+
   var e = new peliculas(req.body);
   await peliculas.insertMany(e);
-  res.redirect("/");
+  res.status(200).json()
 });
 
 module.exports = rutas;
