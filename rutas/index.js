@@ -9,6 +9,13 @@ rutas.get("/", async (req, res) => {
   res.json(listapeliculas);
 });
 
+rutas.post("/peliculas", async (req, res) => {
+  //console.log(req.body)
+  var e = new peliculas(req.body);
+  await peliculas.insertMany(e);
+  res.status(200).json()
+});
+
 rutas.get("/peliculas:id?", async (req, res) => {
   const { id } = req.query;
   const listaPeliculas = await peliculas.find({ id: id });
@@ -46,12 +53,6 @@ rutas.delete("/peliculas/:id", async (req, res) => {
 
 });
 
-rutas.post("/peliculas", async (req, res) => {
-  //console.log(req.body)
 
-  var e = new peliculas(req.body);
-  await peliculas.insertMany(e);
-  res.status(200).json()
-});
 
 module.exports = rutas;
