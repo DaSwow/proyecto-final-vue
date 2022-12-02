@@ -22,8 +22,7 @@
                   <v-col cols="12">
                     <v-text-field v-model="atributosModificados.id" label="Id*" required></v-text-field>
                     <v-text-field v-model="atributosModificados.nombre" label="Nombre*" required></v-text-field>
-                    <v-text-field v-model="atributosModificados.genero" label="Género*" type="password"
-                      required></v-text-field>
+                    <v-text-field v-model="atributosModificados.genero" label="Género*" required></v-text-field>
                     <v-checkbox v-model="atributosModificados.disponible" label="Disponible" color="info" value="info"
                       hide-details></v-checkbox>
                   </v-col>
@@ -107,7 +106,6 @@
 export default {
   data() {
     return {
-      Atributos: [],
       atributos: {
         id: "",
         nombre: "",
@@ -159,8 +157,7 @@ export default {
         if (this.disponible != "") { this.disponible = true }
         else { this.disponible = false }
         this.axios.post("/peliculas", this.atributos)
-          .then((res) => {
-            this.Atributos.push(res.data);
+          .then(() => {
             this.atributos.id = ""
             this.atributos.nombre = ""
             this.atributos.genero = ""
@@ -176,23 +173,34 @@ export default {
     },
     activarEditar(id, index) {
       this.idPeli = id
-      this.dialog = true
       this.index = index
 
+      this.atributosModificados.id = this.peliculas[this.index].id
+      this.atributosModificados.nombre = this.peliculas[this.index].nombre
+      this.atributosModificados.genero = this.peliculas[this.index].genero
+      this.atributosModificados.disponible = this.peliculas[this.index].disponible
+
+      this.dialog = true
     },
     async editarPelicula() {
       try {
         if (this.atributosModificados.disponible != "") { this.atributosModificados.disponible = true }
         else { this.atributosModificados.disponible = false }
-        
+
 
         this.axios.put("/peliculas/" + this.idPeli, this.atributosModificados)
-          .then((res) => {
-            this.Atributos.push(res.data);
+          .then(() => {
+
             this.atributos.id = ""
             this.atributos.nombre = ""
             this.atributos.genero = ""
             this.atributos.disponible = false
+
+            this.atributosModificados.id = ""
+            this.atributosModificados.nombre = ""
+            this.atributosModificados.genero = ""
+            this.atributosModificados.disponible = false
+
             this.cargarTabla()
 
           })
