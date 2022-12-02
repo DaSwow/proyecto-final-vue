@@ -23,8 +23,7 @@
                     <v-text-field v-model="atributosModificados.id" label="Id*" required></v-text-field>
                     <v-text-field v-model="atributosModificados.nombre" label="Nombre*" required></v-text-field>
                     <v-text-field v-model="atributosModificados.genero" label="Género*" required></v-text-field>
-                    <v-checkbox v-model="atributosModificados.disponible" label="Disponible" color="info" value="info"
-                      hide-details></v-checkbox>
+                    <v-checkbox v-model="atributosModificados.disponible" label="Disponible" color="info" value="info" hide-details></v-checkbox>
                   </v-col>
                 </v-row>
               </v-container>
@@ -72,7 +71,7 @@
           <td>{{ getDisponible(pelicula.disponible) }}</td>
           <td>
 
-            <form @submit.prevent="eliminarPelicula(pelicula.id)">
+            <form @submit.prevent="eliminarPelicula(pelicula._id)">
               <button type="submit" style="border:none;" class="btn btn-outline-danger">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
                   class="bi bi-trash3-fill" viewBox="0 0 16 16">
@@ -162,6 +161,7 @@ export default {
             this.atributos.nombre = ""
             this.atributos.genero = ""
             this.atributos.disponible = false
+
             this.cargarTabla()
 
           })
@@ -201,6 +201,8 @@ export default {
             this.atributosModificados.genero = ""
             this.atributosModificados.disponible = false
 
+            this.index=0
+            this.idPeli = ""
             this.cargarTabla()
 
           })
@@ -212,7 +214,15 @@ export default {
     },
 
     async eliminarPelicula(idpeli) {
-      alert("Película eliminada: " + idpeli)
+      try {
+        this.axios.delete("/peliculas/" + idpeli)
+          .then(() => {
+            this.cargarTabla()
+          })
+      } catch (error) {
+        alert("Película no se pudo eliminar")
+        console.error(error)
+      }
     },
     async listarTodo() {
       try {

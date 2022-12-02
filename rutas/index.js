@@ -33,10 +33,9 @@ rutas.put("/peliculas/:id", async (req, res) => {
 });
 
 rutas.delete("/peliculas/:id", async (req, res) => {
-  console.log("eliminado")
   const id = req.params.id;
-  await peliculas.deleteOne({ id: id });
-
+  await peliculas.deleteOne({ _id: id });
+  res.status(200).json()
 });
 
 
