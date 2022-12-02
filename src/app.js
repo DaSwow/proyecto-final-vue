@@ -15,7 +15,7 @@ app.use(bodyParser.json())
 
 //Conexión a base de datos
 const  mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/crud-proyecto-final').
+mongoose.connect('mongodb://127.0.0.1:27017/crud-proyecto-final').
     then(db=>{console.log('Conectado a BDD.')}).
     catch(err=>console.log("Error al conectarse a la BDD"));
 

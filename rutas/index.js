@@ -16,38 +16,24 @@ rutas.post("/peliculas", async (req, res) => {
   res.status(200).json()
 });
 
-rutas.get("/peliculas:id?", async (req, res) => {
-  const { id } = req.query;
-  const listaPeliculas = await peliculas.find({ id: id });
-  res.render("hola", { listaPeliculas });
-});
-
-//middleware
-rutas.use(function (req, res, next) {
-  if (req.query._method == "PUT") {
-    req.method = "PUT";
-    req.url = req.path;
-  }
-  if (req.query._method == "DELETE") {
-    req.method = "DELETE";
-    req.url = req.path;
-  }
-  next();
-});
 
 rutas.put("/peliculas/:id", async (req, res) => {
-  const id = req.params.id;
-  var disponible = await peliculas.findOne({ id: id });
-  if (disponible.disponible === false) {
-    await peliculas.updateOne({ id: id }, { $set: { disponible: true } });
-  } else {
-    await peliculas.updateOne({ id: id }, { $set: { disponible: false } });
+  const id =  req.params.id
+  const peli = {
+    id : req.body.id,
+    nombre : req.body.nombre,
+    genero : req.body.genero,
+    disponible : req.body.disponible,
   }
+
+  await peliculas.findByIdAndUpdate(id, peli )
+  res.status(200).json()
 
 
 });
 
 rutas.delete("/peliculas/:id", async (req, res) => {
+  console.log("eliminado")
   const id = req.params.id;
   await peliculas.deleteOne({ id: id });
 

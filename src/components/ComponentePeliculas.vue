@@ -6,8 +6,46 @@
 
 
   </head>
-  <!-- Tabla de peliculas-->
+
   <div id="ComponentePeliculas">
+
+    <template>
+      <v-row justify="center">
+        <v-dialog v-model="dialog" persistent max-width="600px">
+          <v-card>
+            <v-card-title>
+              <span class="text-h5">Editar Película</span>
+            </v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12">
+                    <v-text-field v-model="atributosModificados.id" label="Id*" required></v-text-field>
+                    <v-text-field v-model="atributosModificados.nombre" label="Nombre*" required></v-text-field>
+                    <v-text-field v-model="atributosModificados.genero" label="Género*" type="password"
+                      required></v-text-field>
+                    <v-checkbox v-model="atributosModificados.disponible" label="Disponible" color="info" value="info"
+                      hide-details></v-checkbox>
+                  </v-col>
+                </v-row>
+              </v-container>
+              <small>*Requerido</small>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="dialog = false">
+                Cerrar
+              </v-btn>
+              <form @submit.prevent="editarPelicula()">
+                <v-btn type="submit" color="blue darken-1">
+                  Guardar
+                </v-btn>
+              </form>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-row>
+    </template>
 
     <form @submit.prevent="agregarPelicula()">
       <input v-model="atributos.id" type="text" name="id" required placeholder="Ingresa el ID" /><br />
@@ -19,7 +57,7 @@
       <input type="submit" class="btn btn-info" value="Agregar Película" />
     </form>
 
-
+    <!-- Tabla de peliculas-->
     <table class="table">
       <thead class="thead-light">
         <th scope="col">ID</th>
@@ -28,7 +66,7 @@
         <th scope="col">Disponibilidad</th>
       </thead>
       <tbody>
-        <tr v-for="pelicula in peliculas " :key="pelicula.id">
+        <tr v-for="(pelicula, index) in peliculas " :key="pelicula.id">
           <td>{{ pelicula.id }}</td>
           <td>{{ pelicula.nombre }}</td>
           <td>{{ pelicula.genero }}</td>
@@ -46,7 +84,7 @@
             </form>
           </td>
           <td>
-            <form @submit.prevent="editarPelicula(pelicula.id)">
+            <form @submit.prevent="activarEditar(pelicula._id, index)">
               <button type="submit" style="border:none;" class="btn btn-primary">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-pen"
                   viewBox="0 0 16 16">
@@ -61,10 +99,6 @@
         </tr>
       </tbody>
     </table>
-
-
-
-
   </div>
 </template>
 
@@ -80,7 +114,16 @@ export default {
         genero: "",
         disponible: false,
       },
-      peliculas: []
+      atributosModificados: {
+        id: "",
+        nombre: "",
+        genero: "",
+        disponible: false,
+      },
+      peliculas: [],
+      dialog: false,
+      index: 0,
+      idPeli: "",
 
     }
   },
@@ -115,8 +158,6 @@ export default {
       try {
         if (this.disponible != "") { this.disponible = true }
         else { this.disponible = false }
-
-
         this.axios.post("/peliculas", this.atributos)
           .then((res) => {
             this.Atributos.push(res.data);
@@ -133,11 +174,37 @@ export default {
       }
 
     },
+    activarEditar(id, index) {
+      this.idPeli = id
+      this.dialog = true
+      this.index = index
+
+    },
+    async editarPelicula() {
+      try {
+        if (this.atributosModificados.disponible != "") { this.atributosModificados.disponible = true }
+        else { this.atributosModificados.disponible = false }
+        
+
+        this.axios.put("/peliculas/" + this.idPeli, this.atributosModificados)
+          .then((res) => {
+            this.Atributos.push(res.data);
+            this.atributos.id = ""
+            this.atributos.nombre = ""
+            this.atributos.genero = ""
+            this.atributos.disponible = false
+            this.cargarTabla()
+
+          })
+      } catch (error) {
+        alert("Película no se pudo editar")
+        console.error(error)
+      }
+      this.dialog = false
+    },
+
     async eliminarPelicula(idpeli) {
       alert("Película eliminada: " + idpeli)
-    },
-    async editarPelicula(idpeli) {
-      alert("Película a editar: " + idpeli)
     },
     async listarTodo() {
       try {
