@@ -23,7 +23,7 @@
                     <v-text-field v-model="atributosModificados.id" label="Id*" required></v-text-field>
                     <v-text-field v-model="atributosModificados.nombre" label="Nombre*" required></v-text-field>
                     <v-text-field v-model="atributosModificados.genero" label="Género*" required></v-text-field>
-                    <v-checkbox v-model="atributosModificados.disponible" label="Disponible" color="info" value="info" hide-details></v-checkbox>
+                    <v-checkbox v-model="atributosModificados.disponible"  label="Disponible" color="info" value="info" hide-details></v-checkbox>
                   </v-col>
                 </v-row>
               </v-container>
@@ -179,7 +179,6 @@ export default {
       this.atributosModificados.nombre = this.peliculas[this.index].nombre
       this.atributosModificados.genero = this.peliculas[this.index].genero
       this.atributosModificados.disponible = this.peliculas[this.index].disponible
-
       this.dialog = true
     },
     async editarPelicula() {
@@ -201,7 +200,7 @@ export default {
             this.atributosModificados.genero = ""
             this.atributosModificados.disponible = false
 
-            this.index=0
+            this.index = 0
             this.idPeli = ""
             this.cargarTabla()
 
