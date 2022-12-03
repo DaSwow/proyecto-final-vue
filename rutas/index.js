@@ -8,6 +8,12 @@ rutas.get("/", async (req, res) => {
   const listapeliculas = await peliculas.find();
   res.json(listapeliculas);
 });
+//buscador por id
+rutas.get("/peliculas/:id", async (req, res) => {
+  const id = req.params.id;
+  const listapeliculas = await peliculas.find({id:id});  
+    res.json(listapeliculas); 
+});
 
 rutas.post("/peliculas", async (req, res) => {
   //console.log(req.body)

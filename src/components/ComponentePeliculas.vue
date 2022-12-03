@@ -92,16 +92,23 @@
               </button>
             </form>
           </td>
-
           <td></td>
         </tr>
       </tbody>
     </table>
+    <form @submit.prevent="buscarPelicula()">
+          <input  v-model="idBuscarP" type="text" name="buscadorid" required placeholder="Buscar por id" />
+          <button type="submit" style="border:none" class="btn btn-info">Buscar</button>       
+          </form>
+
+    <form @submit.prevent="mostrarTodos()">
+          <button type="submit" style="border:none" class="btn btn-warning">Mostrar todo</button>
+    </form>
   </div>
+  
 </template>
 
 <script>
-
 export default {
   data() {
     return {
@@ -121,7 +128,7 @@ export default {
       dialog: false,
       index: 0,
       idPeli: "",
-
+      idBuscarP:"",
     }
   },
 
@@ -230,9 +237,30 @@ export default {
             this.peliculas = response.data
           }))
       } catch (error) { console.error }
-    }
+    },
+    async buscarPelicula(){
+     try {
+         this.axios.get("/peliculas/"+this.idBuscarP).then((res)=>{
+         this.peliculas = res.data
+         })
+     } catch (error) {
+      alert(error)
+     }
+    },
+    async mostrarTodos(){
+      this.cargarTabla()
+    },
   }
-
 
 }
 </script>
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+</style>
