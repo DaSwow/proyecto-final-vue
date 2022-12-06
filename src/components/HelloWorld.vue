@@ -46,7 +46,7 @@ h3 {
 }
 ul {
   list-style-type: none;
-  padding: 0;
+  padding: 10;
 }
 li {
   display: inline-block;

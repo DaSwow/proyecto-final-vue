@@ -3,12 +3,11 @@
   <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
       integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous" />
-
-
+     
   </head>
 
   <div id="ComponentePeliculas">
-
+  <h1>Peliculas</h1>
     <template>
       <v-row justify="center">
         <v-dialog v-model="dialog" persistent max-width="600px">
@@ -45,25 +44,30 @@
       </v-row>
     </template>
 
-    <form @submit.prevent="agregarPelicula()">
-      <input v-model="atributos.id" type="text" name="id" required placeholder="Ingresa el ID" /><br />
-      <input v-model="atributos.nombre" type="text" name="nombre" required placeholder="Ingresa el nombre" /><br />
-      <input v-model="atributos.genero" type="text" name="genero" required placeholder="Ingresa el genéro" /><br />
-      <input v-model="atributos.disponible" type="checkbox" name="disponible">
+    <form @submit.prevent="agregarPelicula()" id="agregarp" >
+      <input v-model="atributos.id"  type="text" name="id" required placeholder="Ingresa el ID" /><br />
+      <input v-model="atributos.nombre"  type="text" name="nombre" required placeholder="Ingresa el nombre" /><br />
+      <input v-model="atributos.genero"  type="text" name="genero" required placeholder="Ingresa el genéro" /><br />
+      <input v-model="atributos.disponible" type="checkbox" id="dis" name="disponible">
       <label for="disponible">Disponible</label><br />
-
+      
       <input type="submit" class="btn btn-info" value="Agregar Película" />
     </form>
+    <br/>
 
     <!-- Tabla de peliculas-->
-    <table class="table">
+    <div id="tabla" >
+       <table   class="table table-striped-columns">
       <thead class="thead-light">
+
         <th scope="col">ID</th>
         <th scope="col">Nombre</th>
         <th scope="col">Genero</th>
         <th scope="col">Disponibilidad</th>
+        <th></th>
+        <th></th>
       </thead>
-      <tbody>
+      <tbody class="table-group-divider">
         <tr v-for="(pelicula, index) in peliculas " :key="pelicula.id">
           <td>{{ pelicula.id }}</td>
           <td>{{ pelicula.nombre }}</td>
@@ -92,18 +96,25 @@
               </button>
             </form>
           </td>
-          <td></td>
+        
         </tr>
       </tbody>
     </table>
-    <form @submit.prevent="buscarPelicula()">
-          <input  v-model="idBuscarP" type="text" name="buscadorid" required placeholder="Buscar por id" />
-          <button type="submit" style="border:none" class="btn btn-info">Buscar</button>       
+    </div>
+   <div id="busqueda">
+    <form @submit.prevent="buscarPelicula()" >
+      <br/>
+          <input  v-model="idBuscarP" id ="idBusc" type="text" name="buscadorid" required placeholder="Buscar por id" />
+          <button type="submit" style="border:none"  class="btn btn-info">Buscar</button>       
           </form>
 
     <form @submit.prevent="mostrarTodos()">
           <button type="submit" style="border:none" class="btn btn-warning">Mostrar todo</button>
+          <br/>
+
     </form>
+   </div>
+    
   </div>
   
 </template>
@@ -255,12 +266,30 @@ export default {
 }
 </script>
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+#tabla{
+background-color: white;
 }
+#ComponentePeliculas{
+
+background-color: rgb(205, 248, 248);
+}
+h1{
+  text-align: center;
+  font-size: 20px;
+  font-family: 'Courier New', Courier, monospace;
+  color: black;
+  font-style: italic;
+  font-weight: bold;
+} 
+#idBusc{
+  background-color: white;
+  height: 30px;
+}
+#agregarp{
+  background-color: white;
+  width: auto;
+  color: black;
+
+}
+
 </style>
